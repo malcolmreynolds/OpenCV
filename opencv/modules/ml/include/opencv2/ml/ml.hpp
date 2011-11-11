@@ -1020,6 +1020,7 @@ public:
     virtual bool train( CvMLData* data, CvRTParams params=CvRTParams() );
     virtual float predict( const CvMat* sample, const CvMat* missing = 0 ) const;
     virtual float predict_prob( const CvMat* sample, const CvMat* missing = 0 ) const;
+	virtual float predict_variance( const CvMat* sample, const CvMat* missing = 0, float* varianceOut = 0 ) const;
 
 #ifndef SWIG
     CV_WRAP virtual bool train( const cv::Mat& trainData, int tflag,

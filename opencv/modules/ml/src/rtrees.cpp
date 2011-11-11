@@ -729,6 +729,52 @@ float CvRTrees::predict_prob( const CvMat* sample, const CvMat* missing) const
     return -1;
 }
 
+
+/*
+  For regression only, predict a value and also calculate the variance at the same time
+ */
+float CvRTrees::predict_variance( const CvMat* sample, const CvMat* missing, float* varianceOut ) const
+{
+    double result = -1;
+    double variance = -1;
+    double mean;
+    double v;
+    int k;
+    if (nclasses > 0)
+    {
+        CV_Error(CV_StsBadArg, "This function works for regression only...");
+    }
+
+    //record the prediction of each tree, so we can work out the variance
+	cv::AutoBuffer<float> _predictions(ntrees);
+	float* predictions = _predictions;
+	// There is no need to memset the predictions array to zero (as is the case
+	// above for votes) as we will fill each entry as we go.
+    for (k=0; k < ntrees; k++)
+    {
+        predictions[k] = trees[k]->predict(sample, missing)->value;
+        result += predictions[k];
+    }
+    mean = result / (double)ntrees;
+
+    //only do this computation if a pointer is supplied for the variance
+    if (varianceOut != NULL)
+    {
+        //work out the variance of predictions - we already have the mean
+        //so just do sum of squared differences from the mean.
+        for (k=0; k < ntrees; k++)
+        {
+            v = predictions[k] - mean;
+            variance += (v*v);
+        }
+
+        *varianceOut = (float)(variance / ntrees);
+    }
+
+    return (float)mean;
+}
+
+
 void CvRTrees::write( CvFileStorage* fs, const char* name ) const
 {
     int k;
