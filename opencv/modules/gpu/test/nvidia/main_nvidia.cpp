@@ -2,6 +2,10 @@
  
 #include <cstdio>
 
+#ifdef __APPLE__
+#include <stdint.h>
+#endif
+
 #include "NCV.hpp"
 #include "NCVHaarObjectDetection.hpp"
 
