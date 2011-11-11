@@ -1048,6 +1048,7 @@ public:
     CvMat* get_active_var_mask();
     CvRNG* get_rng();
 
+	double get_oob_error() const;
     int get_tree_count() const;
     CvForestTree* get_tree(int i) const;
 

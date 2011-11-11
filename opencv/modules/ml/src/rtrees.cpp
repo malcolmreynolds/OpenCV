@@ -826,6 +826,14 @@ void CvRTrees::read( CvFileStorage* fs, CvFileNode* fnode )
     }
 }
 
+/*
+ Returns the Out-of-bag (oob) error after training. This is equivalent to, and
+ eliminates the need for, cross validation.
+ */
+double CvRTrees::get_oob_error() const
+{
+	return oob_error;
+}
 
 int CvRTrees::get_tree_count() const
 {
