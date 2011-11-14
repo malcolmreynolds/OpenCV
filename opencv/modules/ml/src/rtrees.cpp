@@ -230,13 +230,26 @@ void CvRTrees::clear()
     int k;
     for( k = 0; k < ntrees; k++ )
         delete trees[k];
-    cvFree( &trees );
+	if (trees != NULL)
+	{
+    	cvFree( &trees );
+	}
 
-    delete data;
-    data = 0;
-
-    cvReleaseMat( &active_var_mask );
-    cvReleaseMat( &var_importance );
+    if (data != NULL)
+	{
+		delete data;
+	    data = 0;
+	}
+	
+	if (active_var_mask != NULL) 
+	{
+		cvReleaseMat( &active_var_mask );		
+	}
+   
+	if (var_importance != NULL) 
+	{
+    	cvReleaseMat( &var_importance );
+	}
     ntrees = 0;
 }
 
